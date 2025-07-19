@@ -111,15 +111,15 @@ class PCVisCallback(pl.Callback):
             colors[:, : self.batch.data.shape[1], 1] = 255  # green for ground truth
             colors[:, self.batch.data.shape[1] :, 0] = 255  # red for samples
 
-        pl_module.logger.experiment.add_mesh(
-            tag="val/samples",
-            vertices=vertices,
-            colors=colors,
-            global_step=trainer.current_epoch,
-            config_dict={
-                "material": {
-                    "cls": "PointsMaterial",
-                    "size": self.point_size,
-                },
-            },
-        )
+        # pl_module.logger.experiment.add_mesh(
+        #     tag="val/samples",
+        #     vertices=vertices,
+        #     colors=colors,
+        #     global_step=trainer.current_epoch,
+        #     config_dict={
+        #         "material": {
+        #             "cls": "PointsMaterial",
+        #             "size": self.point_size,
+        #         },
+        #     },
+        # )

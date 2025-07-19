@@ -56,7 +56,7 @@ model = Diffusion(
     ),
     # We use a ConvNeXtExtractor to extract features from the context image.
     # It is ran on Example.ctx of each batch and returns image feature pyramid.
-    conditioner=ConvNeXtExtractor(),
+    conditioner=ConvNeXtExtractor(), # replace with point cloud encoder
     # Pass the diffusion reparametrization
     reparam=reparam,
     # We use the EDM loss as described in https://arxiv.org/abs/2206.00364
