@@ -73,6 +73,21 @@ class Context3d(NamedTuple):
 
     def __repr__(self) -> str:
         return "\n".join(self._raw_repr())
+    
+class Neuron(NamedTuple):
+    """
+    A class representing a neuron. It consists of a point cloud and a context (possibly None).
+    """
+
+    points: Tensor
+    partial: Tensor | None
+
+    _enumerate_fields = _named_tuple_enumerate_fields
+    _raw_repr = _raw_repr
+    apply_to_tensors = apply_to_tensors
+
+    def __repr__(self) -> str:
+        return "\n".join(self._raw_repr())
 
 
 class Example(NamedTuple):

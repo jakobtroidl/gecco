@@ -133,7 +133,7 @@ class EDMLoss(nn.Module):
     def extra_repr(self) -> str:
         return f"sigma_data={self.sigma_data}, loss_scale={self.loss_scale}"
 
-    def forward(self, net: Diffusion, examples: Example, context: Context3d) -> Tensor:
+    def forward(self, net: Diffusion, examples: Example, context: Tensor) -> Tensor:
         ex_diff = net.reparam.data_to_diffusion(examples, context)
         sigma = self.schedule(ex_diff)
         weight = (sigma**2 + self.sigma_data**2) / ((sigma * self.sigma_data) ** 2)
@@ -272,7 +272,7 @@ class Diffusion(pl.LightningModule):
     def sample_stochastic(
         self,
         shape: Sequence[int],
-        context: Context3d | None,
+        context: Tensor | None,
         rng: torch.Generator = None,
         **kwargs,
     ) -> Tensor:
@@ -294,7 +294,7 @@ class Diffusion(pl.LightningModule):
         device = self.example_param.device
         dtype = self.example_param.dtype
         if rng is None:
-            rng = torch.Generator(device).manual_seed(42)
+            rng = torch.Generator(device)#.manual_seed(42)
 
         B = shape[0]
         latents = torch.randn(shape, device=device, generator=rng, dtype=dtype)

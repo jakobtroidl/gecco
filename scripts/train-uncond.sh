@@ -1,0 +1,1 @@
+bsub -J "Train Gen" -n 12 -gpu "num=1" -q gpu_a100 -o "logs/train_gen.log" python gecco-torch/example_configs/neuron_unconditional.py

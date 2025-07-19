@@ -7,7 +7,8 @@ from gecco_torch.diffusion import EDMPrecond, Diffusion, IdleConditioner
 from gecco_torch.reparam import GaussianReparam
 from gecco_torch.diffusion import Diffusion, LogUniformSchedule, EDMLoss
 from gecco_torch.models.set_transformer import SetTransformer
-from gecco_torch.models.linear_lift import LinearLift
+from gecco_torch.models.partial_lift import LinearLiftCond
+from gecco_torch.models.part_enc import PointEncoder
 from gecco_torch.models.activation import GaussianActivation
 from gecco_torch.data.neurons import NeuronDataModule
 from gecco_torch.ema import EMACallback
@@ -29,7 +30,7 @@ reparam = GaussianReparam(
 )
 
 feature_dim = 3 * 128
-network = LinearLift(
+network = LinearLiftCond(
     inner=SetTransformer(
         n_layers=6,
         num_inducers=64,
@@ -45,7 +46,7 @@ model = Diffusion(
     backbone=EDMPrecond(
         model=network,
     ),
-    conditioner=IdleConditioner(),
+    conditioner=PointEncoder(),
     reparam=reparam,
     loss=EDMLoss(
         schedule=LogUniformSchedule(
@@ -67,7 +68,7 @@ def trainer():
                 save_top_k=1,
                 mode="min",
             ),
-            PCVisCallback(n=8, n_steps=128, point_size=0.01),
+            # PCVisCallback(n=8, n_steps=128, point_size=0.01),
         ],
         max_epochs=50,
         precision="16-mixed",
