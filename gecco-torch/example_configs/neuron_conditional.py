@@ -65,18 +65,19 @@ def trainer():
             pl.callbacks.ModelCheckpoint(
                 monitor="val_loss",
                 filename="{epoch}-{val_loss:.3f}",
-                save_top_k=1,
+                save_top_k=3,
                 mode="min",
             ),
             # PCVisCallback(n=8, n_steps=128, point_size=0.01),
         ],
         max_epochs=50,
-        precision="16-mixed",
+        # precision=32,
         gradient_clip_val=1.0,
         gradient_clip_algorithm="value",
     )
 
 
 if __name__ == "__main__":
+    torch.set_float32_matmul_precision('medium')
     model = torch.compile(model)
     trainer().fit(model, data)
