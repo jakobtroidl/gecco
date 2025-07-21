@@ -24,7 +24,7 @@ class TransformWithInverse(torch.nn.Module):
     def __init__(self, voxel_size: list = [1.0, 1.0, 1.0]):
         super(TransformWithInverse, self).__init__()
         self.transforms = [
-            # GlobalScaleTransform(voxel_size[0], voxel_size[1], voxel_size[2]),
+            GlobalScaleTransform(voxel_size[0], voxel_size[1], voxel_size[2]),
             CenterTransform(),
             GlobalScaleTransform(),
         ]

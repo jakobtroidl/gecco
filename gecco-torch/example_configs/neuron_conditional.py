@@ -25,8 +25,8 @@ data = NeuronDataModule(
 )
 
 reparam = GaussianReparam(
-    mean=torch.tensor([1.3038515822572094e-09, -1.8626451769865326e-10, 1.4590720853746575e-09]),
-    sigma=torch.tensor([1.0994588136672974, 0.930317759513855, 0.9617206454277039]),
+    mean=torch.tensor([0.6815091371536255, 0.2573479115962982, 1.0269641876220703]),
+    sigma=torch.tensor([0.027468865737318993, 0.04374050721526146, 0.1090131476521492]),
 )
 
 feature_dim = 3 * 128
@@ -50,7 +50,7 @@ model = Diffusion(
     reparam=reparam,
     loss=EDMLoss(
         schedule=LogUniformSchedule(
-            max=121.0,
+            max=219.14358520507812,  # from find_hyperparameters.ipynb
         ),
     ),
 )

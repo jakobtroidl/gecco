@@ -1,7 +1,7 @@
 import torch 
 
 class GlobalScaleTransform(torch.nn.Module):
-    def __init__(self, scale_x: float = 0.00001, scale_y: float = 0.00001, scale_z: float = 0.00001):
+    def __init__(self, scale_x: float = 0.000005, scale_y: float = 0.000005, scale_z: float = 0.000005):
         super(GlobalScaleTransform, self).__init__()
         self.scale_x = scale_x
         self.scale_y = scale_y
