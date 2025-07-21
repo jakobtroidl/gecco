@@ -3,22 +3,6 @@ import torch
 from gecco_torch.augmentations.scale import GlobalScaleTransform
 from gecco_torch.augmentations.center import CenterTransform
 from gecco_torch.utils import apply_transform
-
-# from gecco_torch.augmentations.rotate import RandomRotation
-# from gecco_torch.augmentations.flip import RandomFlip
-# from gecco_torch.augmentations.jitter import RandomJitter
-# from gecco_torch.augmentations.shear import RandomShear
-
-# class Transform(torch.nn.Module):
-#     def __init__(self):
-#         super(Transform, self).__init__()
-#         self.transforms = torch.nn.Sequential(
-#             CenterTransform(),
-#             GlobalScaleTransform(),
-#         )
-
-#     def forward(self, x):
-#         return self.transforms(x)
     
 class TransformWithInverse(torch.nn.Module):
     def __init__(self, voxel_size: list = [1.0, 1.0, 1.0]):

@@ -62,11 +62,7 @@ class TorchNeuronNet:
         file = os.listdir(self.path)[idx]
         data = torch.load(os.path.join(self.path, file))
 
-        points = data["pc"]
-        points, T, T_i = self.transform(points)
-        # shift = points.mean(dim=0).reshape(1, 3)
-        # scale = points.flatten().std().reshape(1, 1)
-        # points = (points - shift) / scale
+        points, T, T_i = self.transform(data["pc"])
 
         idx = torch.randperm(points.shape[0])[:self.n_points]
         selected = points[idx].clone()
