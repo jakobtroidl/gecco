@@ -81,6 +81,8 @@ class Neuron(NamedTuple):
 
     points: Tensor
     partial: Tensor | None
+    T: Tensor # Transformation matrix applied to the points
+    T_i: Tensor # Inverse transformation matrix applied to the points
 
     _enumerate_fields = _named_tuple_enumerate_fields
     _raw_repr = _raw_repr
