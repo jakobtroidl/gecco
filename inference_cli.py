@@ -43,7 +43,7 @@ def parse_args():
     parser.add_argument(
         '--checkpoint',
         type=str,
-        default='lightning_logs/version_38/arxiv/epoch=2-step=15000.ckpt',
+        default='lightning_logs/version_38/arxiv/epoch=7-step=40000.ckpt',
         help='Path to model checkpoint (relative to config-root or absolute path)'
     )
 
@@ -180,50 +180,7 @@ def run_inference(model, partial, n_samples, n_points, with_pbar):
     )
     return samples
 
-
-# def visualize_results(partial, generated, ground_truth, T_i, output_dir=None):
-#     """Create visualizations of the results."""
-#     # Prepare data for visualization
-#     out = generated[0, ...].squeeze()  # get the first sample
-#     partial = partial.squeeze()
-#     gt = ground_truth.squeeze()
-    
-#     # Combine generated and ground truth for comparison
-#     combined = torch.cat([gt, out], dim=0)
-#     combined_labels = torch.cat([
-#         torch.zeros(gt.shape[0]),  # label for ground truth points
-#         torch.ones(out.shape[0])   # label for generated points
-#     ], dim=0)
-    
-#     label_map = {
-#         0: 'Ground Truth',
-#         1: 'Generated'
-#     }
-    
-#     # Create plots
-#     print("Creating visualizations...")
-#     fig1 = plot(partial.cpu().numpy())
-#     fig2 = plot(combined.cpu().numpy(), combined_labels.cpu().numpy(), label_map=label_map)
-    
-#     if output_dir:
-#         os.makedirs(output_dir, exist_ok=True)
-#         fig1.write_html(os.path.join(output_dir, 'partial.html'))
-#         fig2.write_html(os.path.join(output_dir, 'comparison.html'))
-#         print(f"Plots saved to: {output_dir}")
-#     else:
-#         combine_plots([fig1, fig2])
-    
-#     # Denormalize and plot
-#     denormalized = apply_transform(T_i, partial)
-#     fig3 = plot(denormalized.cpu().numpy())
-    
-#     if output_dir:
-#         fig3.write_html(os.path.join(output_dir, 'denormalized.html'))
-#     else:
-#         fig3.show()
-
-
-def save_point_clouds(partial, generated, superset, output_dir, idx):
+def save_point_clouds(partial, generated, superset, gt, output_dir, idx):
     """Save point clouds as .pt files."""
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
@@ -231,6 +188,7 @@ def save_point_clouds(partial, generated, superset, output_dir, idx):
         torch.save(partial.cpu(), os.path.join(output_dir, f'partial_{idx}.pt'))
         torch.save(generated.cpu(), os.path.join(output_dir, f'generated_{idx}.pt'))
         torch.save(superset.cpu(), os.path.join(output_dir, f'superset_{idx}.pt'))
+        torch.save(gt.cpu(), os.path.join(output_dir, f'gt_{idx}.pt'))
 
         print(f"Point clouds saved to: {output_dir}")
 
@@ -304,6 +262,7 @@ def main():
 
             denormalized_out = apply_transform(T_i, out).squeeze()
             denormalized_partial = apply_transform(T_i, partial).squeeze()
+            denormalized_gt = apply_transform(T_i, points).squeeze()
 
 
             denormalized_samples_list = [(int(x.item()), int(y.item()), int(z.item())) for x, y, z in denormalized_out.cpu().numpy()]
@@ -314,7 +273,7 @@ def main():
             unique_labels, counts = torch.unique(labels, return_counts=True)
 
             # remove all labels with less than 20 points
-            mask = counts >= 20
+            mask = counts >= 50
             unique_labels = unique_labels[mask]
             counts = counts[mask]
 
@@ -331,7 +290,7 @@ def main():
             print(f"Generated samples labels: {unique_labels}, counts: {counts}")
 
             # visualize_results(partial, denormalized_samples, points, T_i, args.output_dir)
-            save_point_clouds(denormalized_partial, denormalized_out, superset, args.output_dir, i)
+            save_point_clouds(denormalized_partial, denormalized_out, superset, denormalized_gt, args.output_dir, i)
 
         print("Inference completed successfully!")
         
