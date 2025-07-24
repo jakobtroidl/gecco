@@ -62,7 +62,7 @@ xml_head = \
 xml_ball_segment = \
 """
     <shape type="sphere">
-        <float name="radius" value="0.025"/>
+        <float name="radius" value="0.012"/>
         <transform name="toWorld">
             <translate x="{}" y="{}" z="{}"/>
         </transform>
@@ -88,7 +88,7 @@ xml_tail = \
             <lookat origin="-4,4,20" target="0,0,0" up="0,0,1"/>
         </transform>
         <emitter type="area">
-            <rgb name="radiance" value="6,6,6"/>
+            <rgb name="radiance" value="7,7,7"/>
         </emitter>
     </shape>
 </scene>
