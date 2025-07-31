@@ -25,7 +25,7 @@ def plot(points, labels=None, label_map=None, color_map=None, size = 1.5, title=
         df["label"] = labels
         if label_map:
             df["label"] = df["label"].map(label_map).fillna(df["label"])
-            fig = px.scatter_3d(df, x="x", y="y", z="z", color="label", color_discrete_sequence=color_map)
+            fig = px.scatter_3d(df, x="x", y="y", z="z", color="label", color_discrete_sequence=["#1f77b4", "#fd3f75"])
             
         else:
             fig = px.scatter_3d(df, x="x", y="y", z="z", color="label", color_continuous_midpoint=color_map, range_color=[0, 1])
@@ -36,7 +36,7 @@ def plot(points, labels=None, label_map=None, color_map=None, size = 1.5, title=
     return fig
 
 
-def combine_plots(figs, rows=1, cols=2):
+def combine_plots(figs, rows=1, cols=3):
     """
     Combine multiple plots into a single figure.
 
@@ -48,7 +48,8 @@ def combine_plots(figs, rows=1, cols=2):
 
     combined_fig = make_subplots(
         rows=rows, cols=cols,
-        specs=[[{"type": "scene"}, {"type": "scene"}]]
+
+        specs=[[{"type": "scene"}, {"type": "scene"}, {"type": "scene"}]],
     )
 
     for i, fig in enumerate(figs):

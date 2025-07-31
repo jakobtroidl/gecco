@@ -49,7 +49,7 @@ model = Diffusion(
     reparam=reparam,
     loss=EDMLoss(
         schedule=LogUniformSchedule(
-            max=121.0,
+            max=219.14358520507812, # from find_hyperparameters.ipynb
         ),
     ),
 )
